@@ -1,0 +1,25 @@
+[Tue Sep 29 02:25:33.755957 2020] [suexec:notice] [pid 1] AH01232: suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.27.0.3. Set the 'ServerName' directive globally to suppress this message
+[Tue Sep 29 02:25:33.780298 2020] [lbmethod_heartbeat:notice] [pid 1] AH02282: No slotmem from mod_heartmonitor
+[Tue Sep 29 02:25:33.877676 2020] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.6 (CentOS) PHP/7.3.22 configured -- resuming normal operations
+[Tue Sep 29 02:25:33.878515 2020] [core:notice] [pid 1] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Tue Sep 29 02:31:12.053732 2020] [php7:error] [pid 9] [client 172.27.0.1:45880] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /var/www/html/users/init.php on line 28
+[Tue Sep 29 03:00:59.939852 2020] [php7:warn] [pid 7] [client 172.27.0.1:45968] PHP Warning:  rmdir(install): Directory not empty in /var/www/html/install/cleanup.php on line 44, referer: http://localhost:4000/install/step3.php
+[Tue Sep 29 03:01:00.026968 2020] [php7:error] [pid 7] [client 172.27.0.1:45968] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /var/www/html/users/init.php on line 79, referer: http://localhost:4000/install/step3.php
+[Tue Sep 29 03:01:05.024365 2020] [php7:error] [pid 8] [client 172.27.0.1:45976] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /var/www/html/users/init.php on line 79, referer: http://localhost:4000/install/step3.php
+[Tue Sep 29 03:01:11.299503 2020] [php7:error] [pid 9] [client 172.27.0.1:45980] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /var/www/html/users/init.php on line 79
+[Tue Sep 29 03:01:21.954203 2020] [php7:error] [pid 10] [client 172.27.0.1:45984] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /var/www/html/users/init.php on line 79
+[Tue Sep 29 03:02:28.538000 2020] [php7:error] [pid 7] [client 172.27.0.1:45998] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /var/www/html/users/init.php on line 75
+[Tue Sep 29 03:02:29.730257 2020] [php7:error] [pid 8] [client 172.27.0.1:46000] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /var/www/html/users/init.php on line 75
+[Tue Sep 29 03:02:31.139111 2020] [php7:error] [pid 9] [client 172.27.0.1:46004] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /var/www/html/users/init.php on line 75
+[Tue Sep 29 03:03:01.698874 2020] [php7:error] [pid 10] [client 172.27.0.1:46008] script '/var/www/html/install/index.php' not found or unable to stat
+[Tue Sep 29 03:03:28.882916 2020] [php7:error] [pid 11] [client 172.27.0.1:46018] script '/var/www/html/install/index.php' not found or unable to stat
+[Tue Sep 29 03:08:01.701256 2020] [php7:warn] [pid 10] [client 172.27.0.1:46042] PHP Warning:  rmdir(install): Directory not empty in /var/www/html/install/cleanup.php on line 44, referer: http://localhost:4000/install/step3.php
+[Tue Sep 29 03:08:02.120880 2020] [php7:warn] [pid 10] [client 172.27.0.1:46042] PHP Warning:  rmdir(/var/www/html/install/): Directory not empty in /var/www/html/users/updates/components/2020-07-16a.php on line 17, referer: http://localhost:4000/install/step3.php
+[Tue Sep 29 03:25:27.572397 2020] [mpm_prefork:notice] [pid 1] AH00169: caught SIGTERM, shutting down
+[Wed Sep 30 00:00:42.200718 2020] [suexec:notice] [pid 1] AH01232: suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.28.0.3. Set the 'ServerName' directive globally to suppress this message
+[Wed Sep 30 00:00:42.234744 2020] [lbmethod_heartbeat:notice] [pid 1] AH02282: No slotmem from mod_heartmonitor
+[Wed Sep 30 00:00:42.255064 2020] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.6 (CentOS) PHP/7.3.22 configured -- resuming normal operations
+[Wed Sep 30 00:00:42.255398 2020] [core:notice] [pid 1] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Wed Sep 30 00:02:08.106865 2020] [mpm_prefork:notice] [pid 1] AH00169: caught SIGTERM, shutting down
