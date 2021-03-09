@@ -26,16 +26,16 @@ require_once $abs_us_root.$us_url_root.'users/helpers/helpers.php';
 $GLOBALS['config'] = array(
 	'mysql'      => array(
 'host'         => 'db',
-'username'     => 'hvac',
-'password'     => 'hvac',
+'username'     => 'root',
+'password'     => 'root',
 'db'           => 'hvac',
 ),
 'remember'        => array(
-  'cookie_name'   => 't9p1K1zoQvS4Ks0RyKzw',
+  'cookie_name'   => 'pmqesoxiw318374csb',
   'cookie_expiry' => 604800  //One week, feel free to make it longer
 ),
 'session' => array(
-  'session_name' => 'RWV3QYhoBHiinnhdr1Z6',
+  'session_name' => 'user',
   'token_name' => 'token',
 )
 );

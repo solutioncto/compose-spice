@@ -163,7 +163,7 @@ includeHook($hooks,'post');
               'join_vericode_expiry' => $settings->join_vericode_expiry
             );
             $to = rawurlencode($email);
-            $subject = html_entity_decode($settings->site_name, ENT_QUOTES);
+            $subject = 'Welcome to '.$settings->site_name;
             $body = email_body('_email_adminUser.php',$params);
             email($to,$subject,$body);
           }
@@ -193,7 +193,7 @@ includeHook($hooks,'post');
     <?=resultBlock($errors,$successes);?>
     <?php includeHook($hooks,'pre'); ?>
     <div class="w-100 text-right">
-    <button class="btn btn-outline-dark" data-toggle="modal" data-target="#adduser"><i class="fa fa-plus"></i> Add User</button>
+    <button class="btn btn-outline-dark"data-toggle="modal" data-target="#adduser"><i class="fa fa-plus"></i> Add User</button>
     </div>
     </div>
     <div class="col-12">
@@ -237,7 +237,7 @@ includeHook($hooks,'post');
     </div>
     </div>
     </div>
-
+  </div>
 
 <div id="adduser" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -250,10 +250,9 @@ includeHook($hooks,'post');
       <div class="modal-body">
             <?php if($settings->auto_assign_un==0) {?>
               <div class="form-group" id="username-group">
-              <label>Username (<?=$settings->min_un?>-<?=$settings->max_un?> chars)<span id="usernameCheck" class="small ml-2"></span></label>
-              <input type="text" class="form-control" id="username" name="username" autocomplete="new-password" value="<?php if (!$form_valid && !empty($_POST)){ echo $username;} ?>" required>
+              <label>Username <span id="usernameCheck" class="small ml-2"></span></label>
+              <input type="text" class="form-control" id="username" name="username" autocomplete="new-password" value="<?php if (!$form_valid && !empty($_POST)){ echo $username;} ?>" required><?php } ?>
               </div>
-            <?php } ?>
               <div class="form-group" id="fname-group">
               <label>First Name</label>
               <input type="text" class="form-control" id="fname" name="fname" value="<?php if (!$form_valid && !empty($_POST)){ echo $fname;} ?>" required autocomplete="new-password">
@@ -267,7 +266,7 @@ includeHook($hooks,'post');
               <input  class="form-control" type="email" name="email" id="email" value="<?php if (!$form_valid && !empty($_POST)){ echo $email;} ?>" required autocomplete="new-password">
               </div>
               <div class="form-group">
-              <label>Password (<?=$settings->min_pw?>-<?=$settings->max_pw?> chars)</label>
+              <label>Password</label>
               <div class="input-group" data-container="body">
               <div class="input-group-append">
                 <span class="input-group-text password_view_control" id="addon1"><span class="fa fa-eye"></span></span>

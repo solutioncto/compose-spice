@@ -52,7 +52,7 @@ foreach ($paths as $path){
 }
 
 $dbpages = fetchAllPages(); //Retrieve list of pages in pages table
-$delMsgs = "";
+
 $count = 0;
 $dbcount = count($dbpages);
 $creations = array();
@@ -90,10 +90,6 @@ if (count($creations) > 0) {
 }
 // //Delete pages from DB if not found
 if (count($deletions) > 0) {
-  foreach($deletions as $d){
-    $delName = $db->query("SELECT page FROM pages WHERE id = ?",[$d])->first();
-    $delMsgs .= $delName->page."\\n";
-  }
   deletePages($deletes);
 }
 
@@ -174,7 +170,7 @@ $csrf = Token::generate();
 ?>
 
 <div class="content mt-3">
-
+  <form class="" action="<?=$us_url_root?>users/admin.php?view=pages" name="" method="post">
     <h2>Manage Page Access
       <?php if($c){?>
            <button type="button" onclick="window.location.href = 'admin.php?view=pages';" name="button" class="btn btn-primary">Show All Pages</button>
@@ -205,11 +201,12 @@ $csrf = Token::generate();
   <div class="card-body">
     <table id="paginate" class='table table-hover table-list-search'>
       <thead>
-        <tr>
-          <th>Id</th><th>Page</th><th>Page Name</th><th>ReAuth</th><th>Access</th>
-        </tr>
+        <th>Id</th><th>Page</th><th>Page Name</th><th>ReAuth</th><th>Access</th>
       </thead>
+
       <tbody>
+
+
         <?php
         //Display list of pages
         $count=0;
@@ -243,17 +240,6 @@ $csrf = Token::generate();
       </table>
       </div>
     </div>
-
-    <?php
-    if($delMsgs != ""){
-      ?>
-      <script type="text/javascript">
-        alert("The following pages have been deleted from your database because they are either no longer present or because you used securePage on a file that was not monitored by UserSpice. You can add additional folders at the top of this page.\n \n<?=$delMsgs?>");
-      </script>
-
-    <?php
-
-  } ?>
     </div>
     <!-- /.row -->
 

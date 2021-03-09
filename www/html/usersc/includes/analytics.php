@@ -1,6 +1,6 @@
 <?php
 /*
-UserSpice 5
+UserSpice 4
 An Open Source PHP User Management System
 by the UserSpice Team at http://UserSpice.com
 

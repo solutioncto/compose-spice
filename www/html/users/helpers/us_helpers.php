@@ -21,14 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'MISSING';
 
-if(!function_exists('ipCheck')) {
+
 function ipCheck() {
   $ip = $_SERVER['REMOTE_ADDR'];
   return $ip;
 }
-}
 
-if(!function_exists('ipCheckBan')) {
 function ipCheckBan(){
   $db = DB::getInstance();
   $ip = ipCheck();
@@ -39,16 +37,12 @@ function ipCheckBan(){
       logger(0,'IP Logging','Blacklisted '.$ip.' attempted visit');
       return false;
     }else{
-      if($eventhooks =  getMyHooks(['page'=>'hitBanned'])){
-        includeHook($eventhooks,'body');
-      }
       return true;
     }
   }else{
     //  logger(0,'User','Blacklisted '.$ip.' attempted visit');
     return false;
   }
-}
 }
 
 if(!function_exists('randomstring')) {
@@ -887,7 +881,7 @@ if(!function_exists('getUSPageFiles')) {
 
             if(!function_exists('importSQL')) {
               function importSQL($file) {
-                $db = DB::getInstance();
+                global $db;
                 $lines = file($file);
                 // Loop through each line
                 foreach ($lines as $line)
@@ -912,16 +906,10 @@ if(!function_exists('getUSPageFiles')) {
 
             if(!function_exists('pluginActive')) {
               function pluginActive($plugin,$checkOnly = false) {
-                global $user,$us_url_root;
-                $db = DB::getInstance();
-                if(isset($user) && $user->isLoggedIn()){
-                  $id = $user->data()->id;
-                }else{
-                  $id = 0;
-                }
+                global $db,$user,$us_url_root;
                 $check = $db->query("SELECT id FROM us_plugins WHERE plugin = ? and status = ?",array($plugin,"active"))->count();
                 if($check != 1) {
-                  logger($id,"Errors","Attempted to access disabled $plugin");
+                  logger($user->data()->id,"Errors","Attempted to access disabled $plugin");
                   if(!$checkOnly){
                     Redirect::to($us_url_root.'users/admin.php?view=plugins&err=Plugin+is+disabled');
                   }
@@ -996,8 +984,7 @@ if(!function_exists('getUSPageFiles')) {
 
             if(!function_exists('getMyHooks')) {
               function getMyHooks($opts = []) {
-                global $currentPage;
-                $db = DB::getInstance();
+                global $db, $currentPage;
 
                 if($opts == []){
                   $hooks = $db->query("SELECT * FROM us_plugin_hooks WHERE page = ? AND disabled = 0",[$currentPage])->results();
@@ -1031,8 +1018,7 @@ if(!function_exists('getUSPageFiles')) {
 
             if(!function_exists('includeHook')) {
               function includeHook($hooks,$position) {
-                global $abs_us_root, $us_url_root, $usplugins;
-                $db = DB::getInstance();
+                global $db, $abs_us_root, $us_url_root, $usplugins;
                 foreach($hooks[$position] as $h)
                 if(isset($h) && file_exists($abs_us_root.$us_url_root.'usersc/plugins/'.$h) && $h != ''){
                   $plugin = strstr($h, '/', 'before_needle');
@@ -1049,14 +1035,9 @@ if(!function_exists('getUSPageFiles')) {
 
             if(!function_exists('registerHooks')) {
               function registerHooks($hooks,$plugin_name) {
-                $db = DB::getInstance();
+                global $db;
                 foreach($hooks as $k=>$v){
                   foreach($v as $key=>$value){
-                    $check = $db->query("SELECT * FROM us_plugin_hooks WHERE page = ? AND folder = ? AND position = ? AND hook = ?",[$k,$plugin_name,$key,$value])->count();
-
-                    if($check > 0){
-                      continue;
-                    }
                     $fields = array(
                       'page'=>$k,
                       'folder'=>$plugin_name,
@@ -1071,7 +1052,7 @@ if(!function_exists('getUSPageFiles')) {
 
             if(!function_exists('deRegisterHooks')) {
               function deRegisterHooks($plugin_name) {
-                $db = DB::getInstance();
+                global $db;
                 $hooks = $db->query("DELETE FROM us_plugin_hooks WHERE folder = ?",[$plugin_name]);
               }
             }
