@@ -12,9 +12,8 @@ services:
       - ./www:/var/www
       - ./httpd_log:/var/log/httpd
   db:
-    build:
-      context: ./mysql
-      dockerfile: Dockerfile
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_ROOT_HOST=%
@@ -22,4 +21,3 @@ services:
       - "3306:3306"
     volumes:
       - ./data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
