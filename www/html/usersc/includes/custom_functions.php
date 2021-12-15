@@ -1,6 +1,6 @@
 <?php
 /*
-UserSpice 5
+UserSpice 4
 An Open Source PHP User Management System
 by the UserSpice Team at http://UserSpice.com
 
@@ -21,3 +21,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //Put your custom functions in this file and they will be automatically included.
 
 //bold("<br><br>custom helpers included");
+require_once $abs_us_root.$us_url_root.'app/includes/clients.php';
+require_once $abs_us_root.$us_url_root.'app/includes/table.php';
