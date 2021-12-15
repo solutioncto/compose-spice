@@ -3,11 +3,6 @@ $host = 'db';
 $user = 'root';
 $pass = 'root';
 
-echo $_SERVER['DOCUMENT_ROOT'];
-echo getenv('MYSQL_HOST');
-echo 'Hi';
-echo $GLOBALS['config']['mysql']['host'];
-
 $mysqli = new mysqli($host, $user, $pass);
 
 if (!$mysqli->connect_error) {

@@ -4,7 +4,7 @@ The use of this website is subject to the following terms of use:
 
 The content of the pages of this website is for your general information and use only. It is subject to change without notice.
 
-This site uses cookies to monitor browsing preferences, analyze traffic and for measurement purposes. If you do allow cookies to be used, personal information you provide may be stored by us for use by third parties.
+This website uses cookies to monitor browsing preferences. If you do allow cookies to be used, the following personal information may be stored by us for use by third parties.
 
 Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information and materials found or offered on this website for any particular purpose.
 

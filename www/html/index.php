@@ -1,20 +1,20 @@
 <?php
+if(file_exists("install/index.php")){
+	//perform redirect if installer files exist
+	//this if{} block may be deleted once installed
+	header("Location: install/index.php");
+}
 
 require_once 'users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 if(isset($user) && $user->isLoggedIn()){
-	if (hasPerm([2,3],$user->data()->id)){
-		header("Location: users/admin.php");
-	} else {
-		header("Location: app/home.php");
-	}
 }
 ?>
 <div id="page-wrapper">
 	<div class="container">
 		<div class="jumbotron">
-			<h1 align="center"><?php echo $settings->site_name;?></h1>
-			<p align="center" class="text-muted">Alpha</p>
+			<h1 align="center"><?=lang("JOIN_SUC");?> <?php echo $settings->site_name;?></h1>
+			<p align="center" class="text-muted"><?=lang("MAINT_OPEN")?></p>
 			<p align="center">
 				<?php
 				if($user->isLoggedIn()){?>
@@ -25,10 +25,10 @@ if(isset($user) && $user->isLoggedIn()){
 				<?php }?>
 			</p>
 			<br>
-			<p align="center">This is a private site.</p>
-			<p align="center">2</p>
+			<p align="center"><?=lang("MAINT_PLEASE");?></p>
+			<h4 align="center"><a href="https://userspice.com/getting-started/">https://userspice.com/getting-started/</a></h4>
 		</div>
-<?php languageSwitcher();?>
+<?php  languageSwitcher();?> 
 	</div>
 </div>
 

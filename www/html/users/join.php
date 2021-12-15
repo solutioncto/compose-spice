@@ -33,7 +33,6 @@ if($user->isLoggedIn()) Redirect::to($us_url_root.'index.php');
 if($settings->recaptcha == 1 || $settings->recaptcha == 2){
         //require_once($abs_us_root.$us_url_root."users/includes/recaptcha.config.php");
 }
-$log = fopen('login.log', 'a+');    
 includeHook($hooks,'pre');
 //There is a lot of commented out code for a future release of sign ups with payments
 $form_method = 'POST';
@@ -77,10 +76,15 @@ if(Input::exists()){
 
         $validation = new Validate();
         if($settings->auto_assign_un==0) {
+        if(pluginActive("userInfo",true)){
+          $is_not_email = false;
+        }else{
+          $is_not_email = true;
+        }
         $validation->check($_POST,array(
           'username' => array(
                 'display' => lang("GEN_UNAME"),
-                'is_not_email' => true,
+                'is_not_email' => $is_not_email,
                 'required' => true,
                 'min' => $settings->min_un,
                 'max' => $settings->max_un,
@@ -192,14 +196,10 @@ if(Input::exists()){
            $reCaptchaValid=TRUE;
            $form_valid = TRUE;
           }
-
-                } else { //else for recaptcha
-           	$form_valid = TRUE;
-		}
+                } //else for recaptcha
 
                 if($reCaptchaValid || $settings->recaptcha == 0){
-
-fwrite($log,"add user to database");
+                        $form_valid = TRUE;
                         //add user to the database
                         $user = new User();
                         $join_date = date("Y-m-d H:i:s");
@@ -214,9 +214,8 @@ fwrite($log,"add user to database");
                         if($act == 1) {
                                 //Verify email address settings
                                 $to = rawurlencode($email);
-                                $subject = 'Welcome to '.$settings->site_name;
+                                $subject = html_entity_decode($settings->site_name, ENT_QUOTES);
                                 $body = email_body('_email_template_verify.php',$params);
-fwrite($log,"sending email.");
                                 email($to,$subject,$body);
                                 $vericode_expiry=date("Y-m-d H:i:s",strtotime("+$settings->join_vericode_expiry hours",strtotime(date("Y-m-d H:i:s"))));
                         }
@@ -237,27 +236,17 @@ fwrite($log,"sending email.");
                                         'vericode_expiry' => $vericode_expiry,
                                         'oauth_tos_accepted' => true
                                 ));
-fwrite($log,"pre Hooks.");
+
                         includeHook($hooks,'post');
                         } catch (Exception $e) {
-fwrite($log,"exception.");
+                                if($eventhooks =  getMyHooks(['page'=>'joinFail'])){
+                                  includeHook($eventhooks,'body');
+                                }
                                 die($e->getMessage());
                         }
-if($form_valid == TRUE){ 
-fwrite($log,"FORM VALID");
-} else {
-fwrite($log,"NOT VALID");
-}
                         if($form_valid == TRUE){ //this allows the plugin hook to kill the post but it must delete the created user
-                        if($settings->twofa == 1){
-                        $twoKey = $google2fa->generateSecretKey();
-                        $db->update('users',$theNewId,['twoKey' => $twoKey]);
-                        }
-fwrite($log,"pre during_user_creation.");
                         include($abs_us_root.$us_url_root.'usersc/scripts/during_user_creation.php');
-fwrite($log,"post during_user_creation.");
 
-fwrite($log,$act);
                         if($act == 1) {
                           logger($theNewId,"User","Registration completed and verification email sent.");
                           $query = $db->query("SELECT * FROM email");

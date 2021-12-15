@@ -1,9 +1,4 @@
 <?php
-// needed for cloneClient()
-require_once __DIR__."/../../site.php";
-require_once SITE_ROOT.'/app/includes/clients.php';
-
-$log = fopen('login.log', 'a+');    
 // This script is really useful for doing additional things when a user is created.
 
 // You have access to two things that will really be helpful.
@@ -37,70 +32,3 @@ $log = fopen('login.log', 'a+');
   // if(!$login){Redirect::to('login.php?err=There+was+a+problem+logging+you+in+automatically.');}
   //where the user goes just after login is in usersc/scripts/custom_login_script.php
 // }
-
-fwrite($log, print_r($_POST, TRUE));
-
-// set the account_owner to the user_id.
-$db->update('users',$theNewId,['account_owner'=>$theNewId]);
-
-// get all the extra fields to put into JSON column
-$jsonArray=array(
-	'hope'=>Input::get('hope'),
-	'tools'=>Input::get('tools'),
-	'chapters'=>Input::get('chapters'),
-	'given'=>Input::get('given'),
-	'cell'=>Input::get('cell'),
-	'city'=>Input::get('city'),
-	'state'=>Input::get('state'),
-	'hvac'=>Input::get('hvac'),
-	'hope1'=>Input::get('hope1'),
-	'hope1other'=>Input::get('hope1other'),
-	'script'=>Input::get('script'),
-	'toolsOther'=>Input::get('toolsOther'),
-	'size'=>Input::get('size'),
-	'close'=>Input::get('close'),
-	'blowerDoorOptions'=>Input::get('blowerDoorOptions'),
-	'calcRun'=>Input::get('calcRun'),
-	'calcComp'=>Input::get('calcComp'),
-	'knew'=>Input::get('knew'),
-	'readRate'=>Input::get('readRate'),
-	'commit'=>Input::get('commit') );
-$json=JSON_ENCODE($jsonArray);
-
-$fields=array(
-	'signup'=>$json,
-	'userid'=>$theNewId,
-	'source'=>Input::get('source'),
-	'spark'=>Input::get('spark'),
-	'appeal'=>Input::get('appeal'),
-	'process'=>Input::get('process'),
-	'blowerDoor'=>Input::get('blowerDoor'),
-	'loadCalc'=>Input::get('loadCalc'),
-	'feedback'=>Input::get('feedback'),
-	'ad'=>Input::get('ad') );
-$db->insert('contractors',$fields);
-
-// add user fields
-$myUser=array();
-$myUser = $db->findById($theNewId,"users");
-$myFields = (array)$myUser->first();
-
-$myArray=array(
-	'username'=>$myFields['username'],
-	'firstName'=>$myFields['fname'],
-	'lastName'=>$myFields['lname'],
-	'email'=>$myFields['email'] );
-$fields = array_merge($myArray,$fields);
-
-fwrite($log, print_r($fields, TRUE));
-
-	// duplicate testie McTestface client to new users account as an example
-	$clone = cloneClient(19,$theNewId); // cloneClient($source,$account)
-fwrite($log, "\nClone of 19 created as client id " . $clone);
-
-$to = rawurlencode('ted@hvac20.com');
-// $to = rawurlencode('eballer@rochester.rr.com');
-$subject = 'Welcome to '.$settings->site_name;
-$body = email_body('_email_new_user.php',$fields);
-fwrite($log, $to);
-email($to,$subject,$body);

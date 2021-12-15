@@ -29,14 +29,18 @@ if (!empty($_GET['action'])) {
     */
     $fields=array('menu_title'=>$menu_title,'parent'=>'-1','dropdown'=>'1','logged_in'=>'1','display_order'=>'99999','label'=>'New Dropdown','link'=>'#','icon_class'=>'');
     $db->insert('menus',$fields);
+    $lastId = $db->lastId();
     logger($user->data()->id,"Menu Manager","Added new dropdown");
+    Redirect::to($us_url_root."users/admin.php?view=nav_item&id=$lastId&action=edit");
   } elseif ($action=='newItem') {
     /*
     Inserts default "item" entry
     */
     $fields=array('menu_title'=>$menu_title,'parent'=>'-1','dropdown'=>'0','logged_in'=>'1','display_order'=>'99999','label'=>'New Item','link'=>'#','icon_class'=>'');
     $db->insert('menus',$fields);
+    $lastId = $db->lastId();
     logger($user->data()->id,"Menu Manager","Added new item");
+    Redirect::to($us_url_root."users/admin.php?view=nav_item&id=$lastId&action=edit");
   } elseif ($action=='delete' && isset($_GET['id'])) {
     $itemId=Input::get('id');
     if (is_numeric($itemId)) {
@@ -102,59 +106,69 @@ Get groups and names
 <div class="content mt-3">
   <h2>Navigation</h2>
   <p class="text-center">
-    <a href="admin.php?view=nav&action=newDropdown" class="btn btn-primary" role="button">New Dropdown</a>
-    <a href="admin.php?view=nav&action=newItem" class="btn btn-primary" role="button">New Item</a>
+    <a href="admin.php?view=nav&action=newDropdown" class="btn btn-dark" role="button">New Dropdown</a>
+    <a href="admin.php?view=nav&action=newItem" class="btn btn-dark" role="button">New Item</a>
     <!-- <a href="admin_menu.php?menu_title=<?=$menu_title?>&action=renumberOrder" class="btn btn-primary" role="button">Renumber Order</a> -->
-    <a href="admin.php?view=nav" class="btn btn-primary" role="button">Refresh</a>
+    <a href="admin.php?view=nav" class="btn btn-dark" role="button">Refresh</a>
   </p>
-  <div>
-    <table class="table table-bordered table-hover table-condensed" id="navTable">
-      <thead><tr><th>ID</th><th>Label</th><th>Parent</th><th>Link*</th><th>Dropdown*</th><th>Authorized Groups</th><th>Logged In*</th><th>Display Order*</th><th>Icon Class*</th><th>Action</th></tr></thead>
-      <tbody>
-        <?php
-        $i=0;
-        $itemCount=sizeof($menu_items);
-        foreach ($menu_items as $item) {
-          ?>
-          <tr>
-            <td><?=$item->id?></td>
-
-            <td><?=(($item->indent) ? '>>> ' : '').$item->label?></td>
-            <td><?=$parentsSelect[$item->parent]?></td>
-            <td><p class="oce" data-id="<?=$item->id?>" data-field="link" data-input="input"><?=$item->link?></p></td>
-
-            <td><p class="oce" data-id="<?=$item->id?>" data-field="dropdown" data-input="select"><?=($item->dropdown) ? 'Yes' : 'No';?></p></td>
-            <td>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-bordered table-hover table-condensed" id="navTable">
+            <thead><tr><th>ID</th><th>Label</th><th>Parent</th><th>Link*</th><th>Dropdown*</th><th>Authorized Groups</th><th class="text-nowrap">Logged In*</th><th>Display Order*</th><th>Icon Class*</th><th>Action</th></tr></thead>
+            <tbody>
               <?php
-              $sep = '';
-              foreach (fetchGroupsByMenu($item->id) as $g) {
-                #var_dump($g);
-                echo $g->group_id.",";
+              $i=0;
+              $itemCount=sizeof($menu_items);
+              foreach ($menu_items as $item) {
+                ?>
+                <tr>
+                  <td><?=$item->id?></td>
 
-              }
-              ?>
-            </td>
-            <td><p class="oce" data-id="<?=$item->id?>" data-field="logged_in" data-input="select"><?=($item->logged_in) ? 'Yes' : 'No';?></p></td>
-            <td><p class="oce" data-id="<?=$item->id?>" data-field="display_order" data-input="input"><?=$item->display_order?></p</td>
+                  <td class="text-nowrap"><?=(($item->indent) ? '>>> ' : '').$item->label?></td>
+                  <td class="text-nowrap"><?=$parentsSelect[$item->parent]?></td>
+                  <td><p class="oce text-dark" data-id="<?=$item->id?>" data-field="link" data-input="input"><?=$item->link?></p></td>
+
+                  <td><p class="oce text-dark" data-id="<?=$item->id?>" data-field="dropdown" data-input="select"><?=($item->dropdown) ? 'Yes' : 'No';?></p></td>
+                  <td>
+                    <?php
+                    $sep = '';
+                    foreach (fetchGroupsByMenu($item->id) as $g) {
+                      #var_dump($g);
+                      echo $g->group_id.",";
+
+                    }
+                    ?>
+                  </td>
+                  <td><p class="oce text-dark" data-id="<?=$item->id?>" data-field="logged_in" data-input="select"><?=($item->logged_in) ? 'Yes' : 'No';?></p></td>
+                  <td><p class="oce text-dark" data-id="<?=$item->id?>" data-field="display_order" data-input="input"><?=$item->display_order?></p</td>
 
 
-              <td><?=$item->icon_class?></td>
-              <td>
-                <a href="admin.php?view=nav_item&id=<?=$item->id?>&action=edit"><span class="fa fa-cog fa-lg"></span></a> /
-                <a href="admin.php?view=nav&id=<?=$item->id?>&action=delete"><span class="fa fa-remove fa-lg"></span></a></td>
-              </tr>
-              <?php
-              $i++;
-            }
-            ?>
-          </tbody>
-        </table>
+                    <td><?=$item->icon_class?></td>
+                    <td>
+                      <a class="text-dark" href="admin.php?view=nav_item&id=<?=$item->id?>&action=edit"><span class="fa fa-cog fa-lg"></span></a> /
+                      <a class="text-dark" href="admin.php?view=nav&id=<?=$item->id?>&action=delete"><span class="fa fa-remove fa-lg"></span></a></td>
+                    </tr>
+                    <?php
+                    $i++;
+                  }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div>
+
+      </div>
+
 
       <script type="text/javascript" src="js/pagination/datatables.min.js"></script>
       <script>
       $(document).ready( function () {
         $('#navTable').DataTable({"pageLength": 25,"stateSave": true,"aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]], "aaSorting": []});
       } );
-      </script>
+    </script>
